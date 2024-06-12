@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::get('/confirm-class', [confirmClassController::class, 'showTable']);
+Route::get('/confirm-class/search', [confirmClassController::class, 'showTable'])->name('confirm-class.search');

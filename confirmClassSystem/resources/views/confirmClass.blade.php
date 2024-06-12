@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Confirm Class Student</title>
+    
     <style>
         #overlay {
             display: none;
@@ -40,6 +41,20 @@
                 <th>วันที่สร้าง</th>
                 <th>วันที่แก้ไข</th>
             </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <form action="{{ route('confirm-class.search') }}" method="GET">
+                        <input type="text" name="query" id="searchInput" placeholder="Search...">
+                    </form>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
             @foreach($data as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
@@ -47,16 +62,27 @@
                     <td>{{ $item->program }}</td>
                     <td>{{ $item->course }}</td>
                     <td>    
-                        <button class="showImageBtn" onclick="showImage('{{ $item->login_image }}')">Show Image</button>
-                    </td>                        
-                    <td>    
-                        <button class="showImageBtn" onclick="showImage('{{ $item->image_file }}')">Show Image</button>
+                        {{-- ถ้าไม่มีรูป login --}}
+                        @if ($item->login_image === null)
+                            <div></div>
+                        @else
+                            <button class="showImageBtn" onclick="showImage('{{ $item->login_image }}')">Show Image</button>
+                        @endif                                       
+                    </td>
+                    <td>   
+                        {{-- ถ้าไม่มีไฟล์รูปภาพ --}}
+                        @if ($item->image_file === null)
+                            <div></div>
+                        @else
+                            <button class="showImageBtn" onclick="showImage('{{ $item->image_file }}')">Show Image</button>
+                        @endif 
                     </td>
                     <td>{{ $item->created_at }}</td>
                     <td>{{ $item->updated_at }}</td>
                 </tr>
             @endforeach
         </table>
+        {!! $data->links('pagination::bootstrap-5') !!}
     </div>
     {{-- ตารางแสดงผล END --}}
 
@@ -65,6 +91,8 @@
     </div>
     
     <script>
+
+        // ควบคุมการเปิดปิดรูป
         function showImage(src) {
             var overlay = document.getElementById('overlay');
             var image = document.getElementById('image');
@@ -75,6 +103,28 @@
         function hideImage() {
             var overlay = document.getElementById('overlay');
             overlay.style.display = 'none';
+        }
+
+
+        // ควบคุมการ
+        var input = document.getElementById("searchInput");
+
+        input.addEventListener("keyup", function(event) {
+            event.preventDefault();
+            search();
+        });
+
+        function search() {
+            var query = document.getElementById("searchInput").value;
+            
+            var url = "{{ route('confirm-class.search') }}?query=" + query;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector("table").innerHTML = data;
+                })
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
