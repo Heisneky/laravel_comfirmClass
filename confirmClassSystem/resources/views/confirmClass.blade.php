@@ -48,12 +48,28 @@
                         <input type="text" name="query" id="searchInput" placeholder="Search...">
                     </form>
                 </td>
+                <td>
+                    <form action="{{ route('confirm-class.search-program') }}" method="GET">
+                        <input type="text" name="query" id="searchInput" placeholder="Search...">
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ route('confirm-class.search-course') }}" method="GET">
+                        <input type="text" name="query" id="searchInput" placeholder="Search...">
+                    </form>                    
+                </td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>
+                    <form action="{{ route('confirm-class.search-created_at') }}" method="GET">
+                        <input type="text" name="query" id="searchInput" placeholder="Search...">
+                    </form> 
+                </td>
+                <td>
+                    <form action="{{ route('confirm-class.search-updated_at') }}" method="GET">
+                        <input type="text" name="query" id="searchInput" placeholder="Search...">
+                    </form>
+                </td>
             </tr>
             @foreach($data as $item)
                 <tr>
